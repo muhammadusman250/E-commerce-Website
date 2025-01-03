@@ -1,31 +1,39 @@
 import { client } from "@/sanity/lib/client";
+import Image from "next/image";
 import Link from "next/link";
 
+// Define a type for the item to avoid using 'any'
+interface ProductItem {
+  productName: string;
+  productPrice: number;
+  imageUrl: string;
+  slug: string;
+  _id: string;
+}
 
 export default async function Products() {
-  const data = await client.fetch(`*[_type == "product"] {
-  productName,
-  productPrice,
-  "imageUrl": productImage.asset->url,
-  slug,
+  const data: ProductItem[] = await client.fetch(`*[_type == "product"] {
+    productName,
+    productPrice,
+    "imageUrl": productImage.asset->url,
+    slug,
     _id
-}`);
-
+  }`);
 
   return (
     <>
-      <h1 className="text-4xl font-serif bg-blue-300 text-center py-5 ">
+      <h1 className="text-4xl font-serif bg-blue-300 text-center py-5">
         Products
       </h1>
       <div className="grid grid-cols-4 max-xl:grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 mt-10 gap-5 px-[8%] max-2xl:px-[5%] max-xl:px-[3%] max-sm:px-[5%]">
-        {data.map((item: any) => {
+        {data.map((item) => {
           return (
             <div
               key={item._id}
               className="shadow-xl p-3 justify-items-center hover:scale-105 duration-300"
             >
               <Link href={`/Products/${item.slug}`}>
-                <img
+                <Image
                   src={item.imageUrl}
                   alt={item.productName}
                   height={250}
