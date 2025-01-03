@@ -3,7 +3,6 @@ import Slider from "@/components/Slider/Slider";
 import Link from "next/link";
 import Image from "next/image";
 
-// Define types for the items
 interface ProductItem {
   productName: string;
   productPrice: number;
